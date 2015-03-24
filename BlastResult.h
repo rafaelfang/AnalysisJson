@@ -4,16 +4,19 @@
  *  Created on: Mar 19, 2015
  *      Author: Chao
  */
-#include <string>
 #include <iostream>
+#include <fstream>
+#include <string>
+#include "json/json.h"
 
 using namespace std;
 #ifndef BLASTRESULT_H_
 #define BLASTRESULT_H_
-
-class BlastResult {
+#include "Result.h"
+class BlastResult: public Result {
 public:
 	BlastResult();
+	void analyze(char*);
 	void toString();
 	virtual ~BlastResult();
 	const string& getAlignment() const;
@@ -48,7 +51,6 @@ private:
 	int SubjectStartFrom;
 	string SubjectPart;
 	int SubjectFinishAt;
-
 
 };
 

@@ -15,7 +15,51 @@ BlastResult::BlastResult() {
 BlastResult::~BlastResult() {
 	// TODO Auto-generated destructor stub
 }
+void BlastResult::analyze(char* filename) {
+	Json::Reader reader;
+	Json::Value root;
 
+	//read from file
+	ifstream is;
+	is.open(filename, ios::binary);
+	string returnString;
+	if (reader.parse(is, root)) {
+
+		//read info from root
+		unsigned int i = 0;
+		char buffer[50];
+		for (i = 1; i < root.size(); i++) {
+
+			sprintf(buffer, "protein%d", i);
+
+			string proteinName = root[buffer]["name"].asString();
+			setName(proteinName);
+			int length = root[buffer]["length"].asInt();
+			setLength(length);
+			double EValue = root[buffer]["EValue"].asDouble();
+			setValue(EValue);
+			int QueryStartFrom = root[buffer]["QueryStartFrom"].asInt();
+			setQueryStartFrom(QueryStartFrom);
+			string QueryPart = root[buffer]["QueryPart"].asString();
+			setQueryPart(QueryPart);
+			int QueryFinishAt = root[buffer]["QueryFinishAt"].asInt();
+			setQueryFinishAt(QueryFinishAt);
+			string Alignment = root[buffer]["Alignment"].asString();
+			setAlignment(Alignment);
+			int SubjectStartFrom = root[buffer]["SubjectStartFrom"].asInt();
+			setSubjectStartFrom(SubjectStartFrom);
+			string SubjectPart = root[buffer]["SubjectPart"].asString();
+			setSubjectPart(SubjectPart);
+			int SubjectFinishAt = root[buffer]["SubjectFinishAt"].asInt();
+			setSubjectFinishAt(SubjectFinishAt);
+
+			toString();
+		}
+
+	}
+
+	is.close();
+}
 void BlastResult::toString() {
 
 	cout << "Protein--" << name << ":" << endl;
@@ -28,8 +72,6 @@ void BlastResult::toString() {
 	cout << "\tIt's Subject Part is:\t" << SubjectPart << endl;
 	cout << "\tIt's Subject starts from " << SubjectStartFrom
 			<< " and ends at: " << SubjectFinishAt << endl;
-
-
 
 }
 const string& BlastResult::getAlignment() const {
